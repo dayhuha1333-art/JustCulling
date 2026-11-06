@@ -9,13 +9,18 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
-        maven {
-            url = "https://jitpack.io"
-        }
     }
     dependencies {
-        // Форк ForgeGradle 1.2 от anatawa12, который не зависит от мёртвого MCPBot
         classpath "com.anatawa12.forge:ForgeGradle:1.2-1.0.0"
+    }
+}
+
+// КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: перенаправление удалённой версии JDT на доступную
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.eclipse.jdt' && details.requested.name == 'org.eclipse.jdt.core') {
+            details.useVersion '3.10.0'
+        }
     }
 }
 
@@ -46,12 +51,4 @@ processResources {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-}
-
-task printVersions {
-    doLast {
-        println "Gradle: " + gradle.gradleVersion
-        println "Java: " + System.getProperty("java.version")
-        println "Forge: " + project.minecraft.version
-    }
 }
