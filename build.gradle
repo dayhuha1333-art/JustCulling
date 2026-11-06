@@ -15,7 +15,7 @@ buildscript {
     }
 }
 
-// КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: перенаправление удалённой версии JDT на доступную
+// КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: подмена несуществующей версии JDT на доступную 3.10.0
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         if (details.requested.group == 'org.eclipse.jdt' && details.requested.name == 'org.eclipse.jdt.core') {
