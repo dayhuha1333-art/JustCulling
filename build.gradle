@@ -13,12 +13,13 @@ buildscript {
     dependencies {
         classpath "com.anatawa12.forge:ForgeGradle:1.2-1.0.0"
     }
-}
 
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.eclipse.jdt' && details.requested.name == 'org.eclipse.jdt.core') {
-            details.useVersion '3.10.0'
+    // КЛЮЧЕВОЕ: правила должны быть внутри buildscript, чтобы действовать на classpath
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'org.eclipse.jdt' && details.requested.name == 'org.eclipse.jdt.core') {
+                details.useVersion '3.10.0'
+            }
         }
     }
 }
