@@ -9,13 +9,17 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            url = "https://jitpack.io"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
+        // Форк ForgeGradle 1.2 от anatawa12, который не зависит от мёртвого MCPBot
+        classpath "com.anatawa12.forge:ForgeGradle:1.2-1.0.0"
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'forge'
 
 version = "1.0"
 group = "com.example.justculling"
@@ -24,7 +28,7 @@ archivesBaseName = "justculling"
 minecraft {
     version = "1.8.8-11.15.1.2318-1.8.8"
     runDir = "run"
-    mappings = "stable_20"
+    mappings = "snapshot_nodoc_20141130"
 }
 
 processResources {
@@ -49,6 +53,5 @@ task printVersions {
         println "Gradle: " + gradle.gradleVersion
         println "Java: " + System.getProperty("java.version")
         println "Forge: " + project.minecraft.version
-        println "Mappings: " + project.minecraft.mappings
     }
 }
