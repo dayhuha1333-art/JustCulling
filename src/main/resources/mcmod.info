@@ -1,0 +1,13 @@
+[
+  {
+    "modid": "justculling",
+    "name": "JustCulling",
+    "description": "Client-side entity culling for Minecraft 1.8.8 (Forge). Render-only, no packets, no state changes. Safe for anti-cheats.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "authorList": ["example"],
+    "credits": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
