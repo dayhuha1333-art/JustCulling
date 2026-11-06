@@ -19,15 +19,6 @@ jobs:
           distribution: 'zulu'
           java-version: '8'
 
-      - name: Download Gradle 2.14.1
-        run: |
-          wget -q https://services.gradle.org/distributions/gradle-2.14.1-bin.zip
-          unzip -q gradle-2.14.1-bin.zip
-          echo "$PWD/gradle-2.14.1/bin" >> $GITHUB_PATH
-
-      - name: Generate Gradle Wrapper
-        run: gradle wrapper --gradle-version 2.14.1
-
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
