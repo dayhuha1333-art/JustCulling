@@ -12,11 +12,10 @@ repositories {
 }
 
 dependencies {
-    // Положите forge-1.8.8-11.15.1.2318-1.8.8-universal.jar в папку libs/
+    // ВАЖНО: файл должен существовать по этому пути!
     compileOnly files('libs/forge-1.8.8-11.15.1.2318-1.8.8-universal.jar')
 }
 
-// Копируем mcmod.info в jar
 processResources {
     inputs.property "version", project.version
 
@@ -37,5 +36,6 @@ task printVersions {
     doLast {
         println "Gradle: " + gradle.gradleVersion
         println "Java: " + System.getProperty("java.version")
+        println "Forge jar exists: " + file('libs/forge-1.8.8-11.15.1.2318-1.8.8-universal.jar').exists()
     }
 }
