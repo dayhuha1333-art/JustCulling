@@ -19,7 +19,7 @@ archivesBaseName = "justculling"
 minecraft {
     version = "1.8.8-11.15.1.2318-1.8.8"
     runDir = "run"
-    mappings = "stable_12"
+    mappings = "snapshot_20141130"
 }
 
 processResources {
