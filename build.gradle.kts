@@ -16,13 +16,18 @@ loom {
     forge {
         pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
     }
-    mappings("snapshot", "20151216")
 }
 
 repositories {
     mavenCentral()
     maven("https://repo.essential.gg/repository/maven-public/")
     maven("https://repo.spongepowered.org/repository/maven-public/")
+}
+
+dependencies {
+    minecraft("com.mojang:minecraft:1.8.9")
+    mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
+    forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 }
 
 tasks.withType<JavaCompile> {
@@ -36,7 +41,8 @@ tasks.named("remapJar") {
 
 tasks.register("printLoomInfo") {
     doLast {
-        println("Minecraft version: " + loom.minecraftVersion)
-        println("Mappings: " + loom.mappings)
+        println("Minecraft: 1.8.9")
+        println("Mappings: mcp_stable:22-1.8.9")
+        println("Forge: 1.8.9-11.15.1.2318-1.8.9")
     }
 }
