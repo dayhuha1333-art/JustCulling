@@ -1,51 +1,40 @@
-name: Build JustCulling
+apply plugin: 'java'
 
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-  workflow_dispatch:
+version = "1.0"
+group = "com.example.justculling"
+archivesBaseName = "justculling"
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-      - name: Set up JDK 8
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '8'
+repositories {
+    mavenCentral()
+}
 
-      - name: Download Gradle 2.14.1
-        run: |
-          wget -q https://services.gradle.org/distributions/gradle-2.14.1-bin.zip
-          unzip -q gradle-2.14.1-bin.zip
-          echo "$PWD/gradle-2.14.1/bin" >> $GITHUB_PATH
+dependencies {
+    compileOnly files('libs/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar')
+}
 
-      - name: Download Forge universal jar
-        run: |
-          mkdir -p libs
-          wget -q https://maven.minecraftforge.net/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar -O libs/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar
+processResources {
+    inputs.property "version", project.version
 
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/gradle.properties') || 'nogradle' }}
-          restore-keys: ${{ runner.os }}-gradle-
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': '1.8.8'
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
 
-      - name: Build with Gradle
-        run: |
-          export PATH="$JAVA_HOME/bin:$PATH"
-          java -version
-          gradle printVersions build
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: justculling-jar
-          path: build/libs/justculling-*.jar
-          if-no-files-found: error
+task printVersions {
+    doLast {
+        println "Gradle: " + gradle.gradleVersion
+        println "Java: " + System.getProperty("java.version")
+        println "Forge jar exists: " + file('libs/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar').exists()
+    }
+}
