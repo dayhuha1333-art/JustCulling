@@ -1,40 +1,42 @@
-apply plugin: 'java'
+plugins {
+    java
+    id("gg.essential.loom") version "0.10.0.+"
+    id("dev.architectury.architectury-pack200") version "0.1.3"
+}
 
-version = "1.0"
 group = "com.example.justculling"
-archivesBaseName = "justculling"
+version = "1.0"
+base.archivesName.set("justculling")
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+}
+
+loom {
+    forge {
+        pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
+    }
+    mappings("snapshot", "20151216")
+}
 
 repositories {
     mavenCentral()
+    maven("https://repo.essential.gg/repository/maven-public/")
+    maven("https://repo.spongepowered.org/repository/maven-public/")
 }
 
-dependencies {
-    compileOnly files('libs/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar')
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
 }
 
-processResources {
-    inputs.property "version", project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': '1.8.8'
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+tasks.named("remapJar") {
+    archiveBaseName.set("justculling")
+    archiveClassifier.set("")
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-task printVersions {
+tasks.register("printLoomInfo") {
     doLast {
-        println "Gradle: " + gradle.gradleVersion
-        println "Java: " + System.getProperty("java.version")
-        println "Forge jar exists: " + file('libs/forge-1.8.9-11.15.1.2318-1.8.9-universal.jar').exists()
+        println("Minecraft version: " + loom.minecraftVersion)
+        println("Mappings: " + loom.mappings)
     }
 }
